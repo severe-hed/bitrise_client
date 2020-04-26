@@ -6,7 +6,7 @@ class BaseDataLoadingScreen<T> extends StatefulWidget {
   BaseDataLoadingScreen({Key key}): super(key: key);
 
   final String title = "not implemented";
-  Future<Paginated<T>> _future = null;
+  Future<Paginated<T>> _future;
 
   @override
   State<StatefulWidget> createState() {

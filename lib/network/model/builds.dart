@@ -88,7 +88,7 @@ class Build {
     triggeredAt: DateTime.parse(json["triggered_at"]),
     startedOnWorkerAt: DateTime.parse(json["started_on_worker_at"]),
     environmentPrepareFinishedAt: DateTime.parse(json["environment_prepare_finished_at"]),
-    finishedAt: DateTime.parse(json["finished_at"]),
+    finishedAt: json["finished_at"] == null ? null : DateTime.parse(json["finished_at"]),
     slug: json["slug"],
     status: json["status"],
     statusText: json["status_text"],

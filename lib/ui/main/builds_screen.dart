@@ -52,14 +52,25 @@ class _BuildsScreenState extends BaseDataLoadingScreenState<Build> {
 
   Widget _itemWidget(BuildContext ctx, Build build) {
     const double height = 100;
-    const buildColors = [Colors.green, Colors.yellow, Colors.red];
-    var color = buildColors[build.status - 1];
+    const buildColors = [Color(0xFF683d87), Colors.green, Colors.red, Colors.yellow];
+    var color = buildColors[build.status];
     const buildIcons = [
-      Icon(Icons.check_circle_outline, color: Colors.green,),
-      Icon(Icons.error_outline, color: Colors.yellow,),
-      Icon(Icons.highlight_off, color: Colors.red,)
+      Icons.check_circle_outline,
+      Icons.error_outline,
+      Icons.highlight_off
     ];
-    var icon = buildIcons[build.status - 1];
+    Widget icon;
+    if (build.status == 0) {
+      icon = Container(
+        padding: EdgeInsets.all(15),
+        child: CircularProgressIndicator(strokeWidth: 1,),
+      );
+
+    }
+    else {
+      icon = Icon(buildIcons[build.status - 1], color: color);
+    }
+
 
     return
       Stack(
@@ -81,11 +92,15 @@ class _BuildsScreenState extends BaseDataLoadingScreenState<Build> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             SizedBox(
-                              width: 40,
+                              width: 50,
                               height: 50,
                               child: icon,
                             ),
-                            Image.network(build.repository.avatarUrl, width: 50, height: 50,),
+                            build.repository.avatarUrl != null ?
+                            Image.network(
+                                build.repository.avatarUrl, width: 50,
+                                height: 50) : Container()
+
                           ],
                         ),
                         Container(
@@ -159,7 +174,7 @@ class _BuildsScreenState extends BaseDataLoadingScreenState<Build> {
                             Flexible(
                                 child:
                                 Text(
-                                  build.startedOnWorkerAt.difference(build.finishedAt).toReadable(),
+                                  build.startedOnWorkerAt.difference(build.finishedAt ?? DateTime.now()).toReadable(),
                                   style: TextStyle(fontWeight: FontWeight.w600),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
